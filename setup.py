@@ -18,7 +18,10 @@ setup(
         "numpy==1.17.2",
         "Keras==2.3.1",
         "Keras-Applications==1.0.8",
-        "Keras-Preprocessing==1.1.0"
+        "Keras-Preprocessing==1.1.0",
+        "tensorboard==2.0.0",
+        "tensorflow==2.0.0",
+        "tensorflow-estimator==2.0.0"
     ],
     url="https://github.com/jbtanguy/JBTools.git",
     author='Jean-Baptiste Tanguy',
