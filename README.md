@@ -1,7 +1,7 @@
 JBTools
 =======
 These codes was written by Jean-Baptiste Tanguy. There are several classes or functions callable but there
-are not really related. It's only to make the programs more easily handled.
+are not really related. It's just about making the programs more easily handled.
 
 What do we have in this package?
 ================================
