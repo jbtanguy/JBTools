@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
-
 from JBTools import __version__
+import io 
 
-with open("README.md", encoding="utf8") as f:
+with io.open("README.md", mode='r', encoding="utf-8") as f:
     readme = f.read()
 
 setup(
