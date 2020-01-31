@@ -52,7 +52,10 @@ def convert_onto_proba_language_model(abs_model):
 			nb += abs_model[seq][char]
 		proba_model[seq] = {} 
 		for char in abs_model[seq].keys():
-			proba_model[seq][char] = abs_model[seq][char] / nb
+			if nb != 0:
+				proba_model[seq][char] = abs_model[seq][char] / nb
+			else:
+				proba_model[seq][char] = 0
 	return proba_model
 
 def get_intersection(model1, model2):
