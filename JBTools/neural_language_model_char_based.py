@@ -44,7 +44,7 @@ class CharBasedNeuralLanguageModel():
 		@return: d (dictionary): in <d> are stored the model and the character/integer mapping dic
 		"""
 		# a. Get the data (raw_text and character sequencies)
-		lines = raw_text.split()
+		lines = txt.split()
 		raw_text = ' '.join(lines)
 		sequences = []
 		for i in range(length, len(raw_text)):
@@ -54,7 +54,7 @@ class CharBasedNeuralLanguageModel():
 		# b. Transform the sequencies by integers
 		mapping = dict((c, i) for i, c in enumerate(chars)) # A dic where characters are associated to an integer
 		encoded_sequences = [] # Here we encoded the sequences with the integer (via <mapping>)
-		for line in lines:
+		for line in sequences:
 			encoded_seq = [mapping[char] for char in line]
 			encoded_sequences.append(encoded_seq)
 		vocab_size = len(mapping)
@@ -66,7 +66,7 @@ class CharBasedNeuralLanguageModel():
 		y = to_categorical(y, num_classes=vocab_size) # one-hot representation
 		# d. Define the model
 		model = Sequential()
-		model.add(LSTM(75, input_shape=(X.shape[1], X.shape[2])))
+		model.add(LSTM(75, input_shape=(X.shape[1], X.shape[2]))) # return_sequences=True pour BILSTM
 		model.add(Dense(vocab_size, activation='softmax'))
 		model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 		model.fit(X, y, epochs=100, verbose=2)
