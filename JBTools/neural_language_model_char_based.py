@@ -27,7 +27,7 @@ class CharBasedNeuralLanguageModel():
 			d = self.learn_language_model(self._txt, self._length)
 			self._model, self._mapping = (d['model'], d['mapping'])
 			if self._modelPath != '' and self._mappingPath != '': # That means the uses want to save his model
-				self.save_model(self._model, self._modelPath, self._mapping, self._mappingPath)
+				self.save_model()
 		elif self._length != 0 and self._modelPath != '' and self._mappingPath != '': # That means we hate to load a model
 			d = self.load_model(self._modelPath, self._mappingPath)
 			self._model, self._mapping = (d['model'], d['mapping'])
@@ -44,8 +44,8 @@ class CharBasedNeuralLanguageModel():
 		@return: d (dictionary): in <d> are stored the model and the character/integer mapping dic
 		"""
 		# a. Get the data (raw_text and character sequencies)
-		lines = txt.split()
-		raw_text = ' '.join(lines)
+		tokens = txt.split()
+		raw_text = ' '.join(tokens)
 		sequences = []
 		for i in range(length, len(raw_text)):
 			seq = raw_text[i-length:i+1] # A sequence of characters
@@ -60,6 +60,7 @@ class CharBasedNeuralLanguageModel():
 		vocab_size = len(mapping)
 		encoded_sequences = array(encoded_sequences)
 		# c. Prepare the data
+
 		X, y = encoded_sequences[:,:-1], encoded_sequences[:,-1]
 		sequences = [to_categorical(x, num_classes=vocab_size) for x in X] # one-hot representation
 		X = array(sequences)
@@ -135,11 +136,17 @@ class CharBasedNeuralLanguageModel():
 		@return: proba
 		"""
 		try:
-			encoded = [self._mapping[char] for char in in_text] # Transforme the given text by integers
-			encoded = pad_sequences([encoded], maxlen=self._length, truncating='pre') # truncate sequences to a fixed length
-			encoded = to_categorical(encoded, num_classes=len(self._mapping)) # one hot encode --> returns a matrix 
-			proba = self._model.predict_proba(encoded)
-			return proba[0][self._mapping[factual_char]]
+			known_chars = list(self._mapping.keys())
+			test_chars = list(set(in_text + factual_char))
+			sanity_check = all(elem in known_chars for elem in test_chars)
+			if sanity_check == True:
+				encoded = [self._mapping[char] for char in in_text] # Transforme the given text by integers
+				encoded = pad_sequences([encoded], maxlen=self._length, truncating='pre') # truncate sequences to a fixed length
+				encoded = to_categorical(encoded, num_classes=len(self._mapping)) # one hot encode --> returns a matrix 
+				proba = self._model.predict_proba(encoded)
+				return proba[0][self._mapping[factual_char]]
+			else:
+				return 0
 		except:
 			print('Something went wrong when getting the probability. Please verify this object has a model and a mapping dic.')
 

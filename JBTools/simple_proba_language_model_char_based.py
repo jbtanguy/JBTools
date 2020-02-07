@@ -28,6 +28,7 @@ def get_absolute_language_model(txt, length):
 	for i in range(length, len(raw_text)):
 		seq = raw_text[i-length:i+1] # A sequence of characters
 		sequences.append(seq)
+	sequences = list(set(sequences))
 	vocab = list(set(raw_text)) # all the different characters found in <txt>
 
 	for seq in sequences:
