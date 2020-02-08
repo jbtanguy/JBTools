@@ -21,7 +21,8 @@ setup(
         "Keras-Preprocessing==1.1.0",
         "tensorboard==2.0.0",
         "tensorflow==2.1.0",
-        "tensorflow-estimator==2.0.0"
+        "tensorflow-estimator==2.0.0",
+        "asrtoolkit==0.2.0"
     ],
     url="https://github.com/jbtanguy/JBTools.git",
     author='Jean-Baptiste Tanguy',
