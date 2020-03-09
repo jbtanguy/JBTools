@@ -12,10 +12,11 @@ from keras.layers import LSTM
 class CharBasedNeuralLanguageModel():
 	"""This class is used to learn, save, load and use character based language model."""
 
-	def __init__(self, t='', l=0, model_p='', mapping_p=''):
+	def __init__(self, t='', l=1, bilstm=False, model_p='', mapping_p=''):
 		"""In order to create a neural language model, we can give:
 		@param: txt (string): a raw txt
 		@param: length (int): an interger = the character sequence length needed to learn the model
+		@param: bilstm (boolean): True is the RNN is a bilstm False if it is an LSTM only (return sequences is False)
 		@param: model_p (string): path to the model in case we prefer load a model rather learn another one
 		@param: mapping_p (string): path to the character/integer mapping dictionary
 		"""
@@ -23,6 +24,7 @@ class CharBasedNeuralLanguageModel():
 		self._length = l
 		self._modelPath = model_p
 		self._mappingPath = mapping_p
+		self._bilstm = bilstm
 		if self._txt != '' and self._length != 0: # That means we have to learn a model
 			d = self.learn_language_model(self._txt, self._length)
 			self._model, self._mapping = (d['model'], d['mapping'])
@@ -67,7 +69,10 @@ class CharBasedNeuralLanguageModel():
 		y = to_categorical(y, num_classes=vocab_size) # one-hot representation
 		# d. Define the model
 		model = Sequential()
-		model.add(LSTM(75, input_shape=(X.shape[1], X.shape[2]))) # return_sequences=True pour BILSTM
+		if self._bilstm == True:
+			model.add(LSTM(75, input_shape=(X.shape[1], X.shape[2]), return_sequences=True))
+		else:
+			model.add(LSTM(75, input_shape=(X.shape[1], X.shape[2]))) 
 		model.add(Dense(vocab_size, activation='softmax'))
 		model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 		model.fit(X, y, epochs=100, verbose=2)
