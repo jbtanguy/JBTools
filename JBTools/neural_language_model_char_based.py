@@ -8,6 +8,7 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.models import Sequential, load_model
 from keras.layers import Dense
 from keras.layers import LSTM
+from keras.layers import Bidirectional
 
 class CharBasedNeuralLanguageModel():
 	"""This class is used to learn, save, load and use character based language model."""
@@ -70,9 +71,10 @@ class CharBasedNeuralLanguageModel():
 		# d. Define the model
 		model = Sequential()
 		if self._bilstm == True:
-			model.add(LSTM(75, input_shape=(X.shape[1], X.shape[2]), return_sequences=True))
+			model.add(Bidirectional(LSTM(vocab_size, input_shape=(X.shape[1], X.shape[2]), return_sequences=True)))
+			model.add(Bidirectional(LSTM(vocab_size)))
 		else:
-			model.add(LSTM(75, input_shape=(X.shape[1], X.shape[2]))) 
+			model.add(LSTM(vocab_size, input_shape=(X.shape[1], X.shape[2]))) 
 		model.add(Dense(vocab_size, activation='softmax'))
 		model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 		model.fit(X, y, epochs=100, verbose=2)
