@@ -169,7 +169,7 @@ class CharBasedSimpleProbaLanguageModel():
 				next_seq += char_max
 				ngram = ngram[1:] + char_max
 				cpt += 1
-			return next_seq
+			return in_text+next_seq
 		else:
 			return ''
 
