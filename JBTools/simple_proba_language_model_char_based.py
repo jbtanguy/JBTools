@@ -163,6 +163,8 @@ class CharBasedSimpleProbaLanguageModel():
 			ngram = in_text[len(in_text)-self._length:]
 			cpt = 0
 			while cpt < n_chars:
+				if ngram not in self._model.keys():
+					break
 				char_max = get_char_max_proba(self._model[ngram])
 				next_seq += char_max
 				ngram = ngram[1:] + char_max
