@@ -182,7 +182,7 @@ class CharBasedSimpleProbaLanguageModel():
 		"""
 		try:
 			if len(in_text) != self._length:
-				in_text = in_text[:self._length]
+				in_text = in_text[len(in_text)-self._length:]
 			if in_text in self._model.keys() and factual_char in self._model[in_text].keys():
 				return self._model[in_text][factual_char]
 			else:
