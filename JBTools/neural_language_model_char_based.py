@@ -108,7 +108,7 @@ class CharBasedNeuralLanguageModel():
 		try:
 			self._model.save(self._modelPath)
 			dump(self._mapping, open(self._mappingPath, 'wb'))
-			print('Model and mapping saved')
+			print('Model, mapping and vocab saved')
 		except:
 			print('Impossible to save the model or the mapping.')
 
@@ -153,7 +153,10 @@ class CharBasedNeuralLanguageModel():
 				proba = self._model.predict_proba(encoded)
 				return proba[0][self._mapping[factual_char]]
 			else:
-				return 0
+				if len(self._mapping) != 0:
+					return 1/len(self._mapping)
+				else:
+					return 0
 		except:
 			print('Something went wrong when getting the probability. Please verify this object has a model and a mapping dic.')
 
