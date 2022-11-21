@@ -20,7 +20,7 @@ setup(
         "Keras-Applications==1.0.8",
         "Keras-Preprocessing==1.1.0",
         "tensorboard==1.14.0",
-        "tensorflow==1.14.0",
+        "tensorflow==2.9.3",
         "tensorflow-estimator==1.14.0",
         "asrtoolkit==0.2.0"
     ],
